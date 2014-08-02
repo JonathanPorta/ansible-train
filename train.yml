@@ -1,0 +1,24 @@
+---
+
+- name: sudo test
+  hosts: pi
+  user: portaj
+  sudo: yes
+  # su_user: root
+  tasks:
+    - shell: whoami
+
+- name: deploy the latest tain controller code.
+  hosts: pi
+  user: portaj
+  sudo: yes
+
+  vars:
+    node_tarball: "node-v{{ node_version }}-{{ node_arch }}.tar.gz"
+    node_tempdir: "node-v{{ node_version }}-{{ node_arch }}"
+
+  roles:
+    - common
+    - nodejs
+    - train
+    - headless

@@ -1,0 +1,24 @@
+---
+# Get the code for the app
+- name: Checkout source code.
+  git: repo={{ repository }}
+    dest={{ install_directory }}
+    version={{ version }}
+
+- name: Install global NPM dependencies.
+  npm: name={{ item }} global='yes'
+  with_items:
+  - grunt
+  - grunt-cli
+  - bower
+
+- name: Install local NPM dependencies.
+  npm: path={{ install_directory }}
+
+- name: Install bower dependencies.
+  shell: 'cd {{ install_directory }} ; bower install --allow-root'
+
+- name: Build client side code.
+  shell: 'cd {{ install_directory }} ; grunt build'
+
+# /home/portaj/bin/node/bin/ ; cd /opt/train ; /home/portaj/bin/node//bin/bower install --allow-root

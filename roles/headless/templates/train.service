@@ -1,0 +1,10 @@
+[Unit]
+Description=Train Service
+
+[Service]
+ExecStart="{{ node_path }}bin/node {{ install_directory }}src/server/start.js"
+Restart=on-failure
+SyslogIdentifier=train
+
+[Install]
+WantedBy=multi-user.target

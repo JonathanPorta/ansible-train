@@ -1,0 +1,69 @@
+---
+# File: setup.yml
+# Part: nodejs
+#
+# Description: Installs nodejs from source
+#
+# Parameters - Must be definied:
+#   - node_path = The nodejs installation directory
+#   - node_version = Desired version of node, such as 0.10.26
+#   - node_arch = The architecture suffix, such as linux-arm-pi
+#   - node_compile = True if we need to compile node, or false if not.
+#   - node_tarball: "node-v{{ node_version }}-{{ node_arch }}.tar.gz"
+#   - node_tempdir: "node-v{{ node_version }}-{{ node_arch }}"
+
+  # Check to see if we already have this version.
+- name: Node.js | Get version of node.js if installed
+  shell: "{{ node_path }}/bin/node -v |  sed 's/v//'"
+  register: installed
+  ignore_errors: True
+
+  # Donload the tar file.
+- name: Node.js | Fetching node.js source
+  action: get_url url=http://nodejs.org/dist/v{{ node_version }}/{{ node_tarball }} dest=/tmp/
+  when: installed.stdout != node_version
+
+- name: Node.js | Unpack node.js tarball
+  command: tar zxf {{ node_tarball }} chdir=/tmp
+  when: installed.stdout != node_version
+
+  # If we are compiling, then, do it!
+- name: Node.js | Compiling - Configure
+  shell: /usr/bin/python ./configure --prefix={{ node_path }} chdir=/tmp/{{ node_tempdir }}
+  when: node_compile and installed.stdout != node_version
+
+- name: Node.js | Compiling - Make
+  shell: /usr/bin/make chdir=/tmp/{{ node_tempdir }}/
+  when: node_compile and installed.stdout != node_version
+
+- name: Node.js | Compiling - Make install
+  shell: /usr/bin/make install chdir=/tmp/{{ node_tempdir }}/
+  when: node_compile and installed.stdout != node_version
+
+ # If node is precompiled, then just move it!
+- name: Node.js | Not Compiling - Clean install path in case we are upgrading
+  command: rm -rf {{ node_path }}
+  when: not node_compile and installed.stdout != node_version
+  args:
+    removes: "{{ node_path }}"
+
+- name: Node.js | Not Compiling - Moving files to install directory
+  command: mv /tmp/{{ node_tempdir }} {{ node_path }}
+  when: not node_compile and installed.stdout != node_version
+
+ # Symlink Node
+- file: src={{ node_path }}bin/node dest=/usr/sbin/node  state=link mode=0775
+
+ # Symlink NPM
+- file: src={{ node_path }}bin/npm dest=/usr/sbin/npm  state=link mode=0775
+
+  # Be nice and don't leave a mess
+- name: Node.js | Cleanup tarball
+  command: rm /tmp/{{ node_tarball }}
+  args:
+    removes: /tmp/{{ node_tarball }}
+
+- name: Node.js | Cleanup tempdir
+  command: rm -rf /tmp/{{ node_tempdir }}
+  args:
+    removes: /tmp/{{ node_tempdir }}

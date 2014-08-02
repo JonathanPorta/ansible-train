@@ -1,0 +1,10 @@
+---
+# Setup the service.
+- name: Copy the service file into place.
+  template: src=train.service dest=/etc/systemd/system/train.service
+
+- name: Tell systemd to reload.
+  command: systemctl daemon-reload
+
+- name: Train server service enable and start.
+  service: name=train state=started enabled=yes

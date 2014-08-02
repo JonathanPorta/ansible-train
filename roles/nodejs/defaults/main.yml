@@ -1,0 +1,12 @@
+---
+# File: nodejs/defaults/main.yml
+# Part: default values
+#
+# Description: These are the values that will be useed by default.
+#
+
+node_version: "0.10.26"
+# node_arch: "linux-arm-pi"
+node_arch: "linux-x64"
+node_path: "/opt/node/"
+node_compile: false
