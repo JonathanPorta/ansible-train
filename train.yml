@@ -1,15 +1,7 @@
 ---
-
-- name: sudo test
-  hosts: pi
-  user: portaj
-  sudo: yes
-  # su_user: root
-  tasks:
-    - shell: whoami
-
+# Train Controller Deployment
 - name: deploy the latest tain controller code.
-  hosts: pi
+  hosts: all
   user: portaj
   sudo: yes
 
@@ -18,7 +10,7 @@
     node_tempdir: "node-v{{ node_version }}-{{ node_arch }}"
 
   roles:
-    - common
-    - nodejs
-    - train
-    - headless
+  - common
+  - nodejs
+  - train
+  - headless
