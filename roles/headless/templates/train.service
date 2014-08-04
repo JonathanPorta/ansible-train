@@ -1,10 +1,13 @@
 [Unit]
 Description=Train Service
+After=network.target
 
 [Service]
-ExecStart="{{ node_path }}bin/node {{ install_directory }}src/server/start.js"
+Environment=PORT={{ port }}
+Environment=NODE_ENV={{ node_env }}
+ExecStart={{ node_path }}bin/node {{ install_directory }}src/server/start.js
 Restart=on-failure
 SyslogIdentifier=train
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=network.target

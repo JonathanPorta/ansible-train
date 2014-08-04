@@ -20,5 +20,3 @@
 
 - name: Build client side code.
   shell: 'cd {{ install_directory }} ; grunt build'
-
-# /home/portaj/bin/node/bin/ ; cd /opt/train ; /home/portaj/bin/node//bin/bower install --allow-root

@@ -7,4 +7,4 @@
   command: systemctl daemon-reload
 
 - name: Train server service enable and start.
-  service: name=train state=started enabled=yes
+  service: name=train state=restarted enabled=yes
