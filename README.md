@@ -7,5 +7,5 @@ Ansible provisioning playbook for deploying the [train controller](https://githu
 ## Development - running on an F20 Vagrant box.
 `ansible-playbook -i development train.yml`
 
-## Production - Pidora running on a Raspberry Pi B+
+## Production - pidora running on a Raspberry Pi B+
 `ansible-playbook -i production train.yml`
