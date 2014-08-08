@@ -1,7 +1,7 @@
 ansible-train
 =============
 
-Ansible provisioning playbook for deploying the [train controller](https://github.com/JonathanPorta/train) onto a RaspberryPi running Pidora.
+Ansible provisioning playbook for deploying the [train controller](https://github.com/JonathanPorta/train) onto a RaspberryPi B+ running Pidora.
 
 
 ## Development - running on an F20 Vagrant box.
