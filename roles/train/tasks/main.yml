@@ -4,6 +4,7 @@
   git: repo={{ repository }}
     dest={{ install_directory }}
     version={{ version }}
+    accept_hostkey=yes
 
 - name: Install global NPM dependencies.
   npm: name={{ item }} global='yes'
